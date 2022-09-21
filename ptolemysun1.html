@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Cosmos - Simulation of Ptolemy's Sun</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Simulation of Ptolemy's model of the motion of the Sun.">
+        <meta property="og:title" content="Cosmos - Simulations of Planetary Motion.">
+        <meta property="og:image" content="images.xdzr.gif">
+        <meta name="twitter:card" content="Cosmos - Simulation of Ptolemy's Sun">
+        <link type="text/css" rel="stylesheet" href="css/mycosmostuff.css">
+        <script src="js/cosmos.js"></script>
+        <script src="js/cosmosutil.js"></script>
+        <script src="js/ptolemysun.js"></script>
+    </head>
+     <body onresize="reSize()"> 
+        <table> 
+            <tbody> 
+                <tr> 
+                    <td class="header">Ptolemy's Sun </td> 
+                    <td class="header">-</td>
+                </tr> 
+                
+                <tr> 
+                    <td class="content">    
+                        <div class="ctlbuttons">
+                            <button class="button" title="Stop/start the animation" id="stopStart" type="button" onclick="stopStart()">&#x25A0;</button>
+                            <button class="button" title= "Reverse direction" type="button"  onclick="reverse()">&#x21D4;</button>
+                            <button class="button" title="Zoom in" type="button"  onmousedown="msd(1)" onmouseup="msu()">&#x2295;</button>
+                            <button class="button" title="Zoom out" type="button"  onmousedown="msd(2)" onmouseup="msu()">&#x2296;</button>
+                            <button class="button" title="Tilt up" type="button"  onmousedown="msd(3)" onmouseup="msu()">&#x2909;</button>
+                            <button class="button" title="Tilt down" type="button"  onmousedown="msd(4)" onmouseup="msu()">&#x2908;</button>
+                            <button class="button" title="Rotate clockwise" type="button"  onmousedown="msd(5)" onmouseup="msu()">&#x21BB;</button>
+                            <button class="button" title="Roate anticlockwise" type="button"  onmousedown="msd(6)" onmouseup="msu()">&#x21BA;</button>
+                            <button class="button" title="Faster" type="button"  onmousedown="msd(7)" onmouseup="msu()">>>></button>
+                            <button class="button" title="Slower" type="button"  onmousedown="msd(8)" onmouseup="msu()">></button>            
+                        </div>
+                        <br>    
+               
+                        <canvas id="layer1" onmousedown="mdown(event)" onmouseup="mup(event)">
+                            This is an animated simulation of Ptolemy's model of the Sun's motion.
+                        </canvas>  
+               
+                    </td> 
+                    <td class="rightScroll"> 
+                        <div>
+                            <h2 class='sideTitle'> Ptolemy's Sun </h2>
+                        <ul> 
+                            <li>Ptolemy bases his theory of the Sun on the work of Hipparchus. </li>
+                            <li>The Earth is in the centre of the Universe and consists of the “spheres” of earth, water, air and fire, 
+                                as described by Aristotle.</li>  
+                            <li>The Sun revolves around the Earth in a "deferent" circle.</li>
+                            <li>The ecliptic is the reference plane and the vernal equinox <b class='sbold'>ϒ</b> is the reference point.</li> 
+                            <li>Coordinates are described in terms of longitude (relative to <b class='sbold'>ϒ</b>) and latitude relative to the ecliptic. 
+                                So, there is no problem with calculating latitude – it is always zero for the Sun. </li>   
+                            <li>One year is the time from equinox to equinox, i.e. one tropical year. 
+                                (The sidereal year - return to same point relative to the stars - is not used because 
+                                the “sphere of fixed stars” is believed to rotate slowly to compensate for what 
+                                we now call "precession of the equinoxes". </li>
+                            <li>Ptolemy uses Hipparchus’s year which is 6 minutes too 
+                                long due to measurement inaccuracy and refraction – 365d 5h 55m 12s. The 6m has 
+                                consequences for the accuracy of all his planetary motion models.</li>
+                            <li>The apparent angular velocity of the Sun varies during the year. We now know this is due to the 
+                                eccentricity of Earth’s orbit round the Sun. The effect can be approximated by having the Sun 
+                                move at uniform speed round the a point <b class='sbold'>E</b> some distance from the centre of the Earth. 
+                                (Zoom in to see.) </li>
+                            <li>This point is called the eccentric, and it needs to be placed 1/24th of the radius of the circle 
+                                in the the direction of longitude 65.5° <b class='sbold'>(λa)</b>. This angle was assumed to be fixed but we now know it moves 
+                                very slowly due to the precession of the Earth’s orbit.</li>
+                            <li>The animation starts on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
+                                Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
+                                were calibrated from observations beginning near that time.
+                        </ul>
+                        <br>
+                        <br>
+                    </div> 
+                    </td> 
+                </tr> 
+                <tr>
+                    <td class="footer" colspan="2"> Tony Evans 2022 </td> 
+                </tr>
+            </tbody> 
+        </table>  
+        <script>
+            init();
+        </script>
+    </body>
+</html>

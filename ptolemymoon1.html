@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cosmos - Simulation of Ptolemy's Moon</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Simulation of Ptolemy's model of the motion of the Moon.">
+        <meta property="og:title" content="Cosmos - Simulations of Planetary Motion.">
+        <meta property="og:image" content="images.xdzr.gif">
+        <meta name="twitter:card" content="Cosmos - Simulation of Ptolemy's Moon">
+        <link type="text/css" rel="stylesheet" href="css/mycosmostuff.css">
+        <script src="js/cosmos.js"></script>
+        <script src="js/cosmosutil.js"></script>
+        <script src="js/ptolemymoon.js"></script>
+    </head>
+     <body onresize="reSize()"> 
+        <table> 
+            <tbody> 
+                <tr> 
+                    <td class="header">Ptolemy's Moon </td> 
+                    <td class="header">-</td>
+                </tr> 
+                
+                <tr> 
+                    <td class="content">    
+                        <div class="ctlbuttons">
+                            <button class="button" title="Stop/start the animation" id="stopStart" type="button" onclick="stopStart()">&#x25A0;</button>
+                            <button class="button" title= "Reverse direction" type="button"  onclick="reverse()">&#x21D4;</button>
+                            <button class="button" title="Zoom in" type="button"  onmousedown="msd(1)" onmouseup="msu()">&#x2295;</button>
+                            <button class="button" title="Zoom out" type="button"  onmousedown="msd(2)" onmouseup="msu()">&#x2296;</button>
+                            <button class="button" title="Tilt up" type="button"  onmousedown="msd(3)" onmouseup="msu()">&#x2909;</button>
+                            <button class="button" title="Tilt down" type="button"  onmousedown="msd(4)" onmouseup="msu()">&#x2908;</button>
+                            <button class="button" title="Rotate clockwise" type="button"  onmousedown="msd(5)" onmouseup="msu()">&#x21BB;</button>
+                            <button class="button" title="Roate anticlockwise" type="button"  onmousedown="msd(6)" onmouseup="msu()">&#x21BA;</button>
+                            <button class="button" title="Faster" type="button"  onmousedown="msd(7)" onmouseup="msu()">>>></button>
+                            <button class="button" title="Slower" type="button"  onmousedown="msd(8)" onmouseup="msu()">></button>            
+                        </div>
+                        <br>    
+               
+                        <canvas id="layer1" onmousedown="mdown(event)" onmouseup="mup(event)">
+                            This is an animated simulation of Ptolemy's model of the Moon's motion.
+                        </canvas>  
+               
+                    </td> 
+                    <td class="rightScroll"> 
+                        <div>
+                            <h2>Ptolemy's Moon</h2>
+                        <ul>
+                            <li>Ptolemy bases his theory of the Sun on the work of Hipparchus, calibrated using observations from the Babylonian 
+                                Astronomical Diaries going back over 700 years.</li>
+                            <li>The ecliptic is the reference plane and the vernal equinox <b class='sbold'> ϒ</b> is the reference point.</li> 
+                            <li>Coordinates are described in terms of longitude (relative to <b class='sbold'>ϒ </b>) and latitude relative to the ecliptic. </li>
+                            <li>The Earth is in the centre of the Universe and consists of the “spheres” of earth, water, air and fire, 
+                                as described by Aristotle. The Sun and Moon revolve round the Earth.</li>
+                            <li>The ecliptic mean Sun <b class='sbold'>S’</b> is positioned based on its mean angular velocity, west-to-east, relative 
+                                to the vernal equinox <b class='sbold'>ϒ</b>. </li>
+                            <li>An eccentric <b class='sbold'> E </b> is placed at distance <b class='sbold'> e </b> from the Earth in a direction 
+                                that rotates round Earth, east-to-west, with angular velocity equal the the synodic mean angular velocity 
+                                of the Moon, relative to the direction of the ecliptic mean Sun <b class='sbold'>S'</b>.
+                           
+                          
+                             <ul><li> The Moon's synodic mean angular velocity is its average angular velocity to rotate from Full Moon to Full Moon. 
+                                    This was established using observations spanning over 700 years and is highly accurate.
+                                 </li></ul></li>
+                            <li> A deferent circle is drawn with radius <b class='sbold'>R</b>, centred on <b class='sbold'>E</b>.</li>
+                            <li>A vector from Earth to the point <b class='sbold'>C</b> is drawn such that it rotates with uniform angular motion, west-to-east, 
+                                with angular velocity equal to the Moon's mean synodic period, relative to the direction of the ecliptic mean Sun <b class='sbold'>S'</b>.</li>
+                            <li>An epicycle circle is drawn with radius <b class='sbold'>r</b>, centred on <b class='sbold'>C</b>.</li>
+                            <li>The point <b class='sbold'>E'</b> is established directly opposite <b class='sbold'>E</b>. </li> 
+                            <li>The Moon rotates round the epicycle, east-to-west, at an angular rate equal to its mean anomalistic 
+                                period, relative to the direction of the vector <b class='sbold'>E'-C</b>. 
+                                <ul><li>The Anomalistic period is the average period to return to the same observed 
+                                        angular velocity.</li></ul></li>
+                            <li>The entire structure is tilted at an angle of 5 degrees to the ecliptic, 
+                                representing the inclination of the Moon's orbit.The direction of the tilt (ascending node) migrates by
+                                0.053 degrees per day east-to-west.</li> 
+                            <li>Ptolemy established <b class='sbold'>e=10.31666, R= 49.68333 and r=5.52</b> using arbitrary units of measurement. </li>
+                            <li>The animation starts on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
+                                Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
+                                were calibrated from observations beginning near that time.
+                        </ul>
+                        <br>
+                        <br>
+                    </div> 
+                    </td> 
+                </tr> 
+                <tr>
+                    <td class="footer" colspan="2"> Tony Evans 2022 </td> 
+                </tr>
+            </tbody> 
+        </table>  
+        <script>
+            init();
+        </script>
+    </body>
+</html>
