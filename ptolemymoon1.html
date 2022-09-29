@@ -26,14 +26,22 @@
                         <div class="ctlbuttons">
                             <button class="button" title="Stop/start the animation" id="stopStart" type="button" onclick="stopStart()">&#x25A0;</button>
                             <button class="button" title= "Reverse direction" type="button"  onclick="reverse()">&#x21D4;</button>
-                            <button class="button" title="Zoom in" type="button"  onmousedown="msd(1)" onmouseup="msu()">&#x2295;</button>
-                            <button class="button" title="Zoom out" type="button"  onmousedown="msd(2)" onmouseup="msu()">&#x2296;</button>
-                            <button class="button" title="Tilt up" type="button"  onmousedown="msd(3)" onmouseup="msu()">&#x2909;</button>
-                            <button class="button" title="Tilt down" type="button"  onmousedown="msd(4)" onmouseup="msu()">&#x2908;</button>
-                            <button class="button" title="Rotate clockwise" type="button"  onmousedown="msd(5)" onmouseup="msu()">&#x21BB;</button>
-                            <button class="button" title="Roate anticlockwise" type="button"  onmousedown="msd(6)" onmouseup="msu()">&#x21BA;</button>
-                            <button class="button" title="Faster" type="button"  onmousedown="msd(7)" onmouseup="msu()">>>></button>
-                            <button class="button" title="Slower" type="button"  onmousedown="msd(8)" onmouseup="msu()">></button>            
+                            <button class="button" title="Zoom in" type="button"  onmousedown="msd(1)" onmouseup="msu()" 
+                                    ontouchstart="msd(1)" ontouchend="msu()" ontouchcancel="msu()">&#x2295;</button>
+                            <button class="button" title="Zoom out" type="button"  onmousedown="msd(2)" onmouseup="msu()"
+                                    ontouchstart="msd(2)" ontouchend="msu()" ontouchcancel="msu()">&#x2296;</button>
+                            <button class="button" title="Tilt up" type="button"  onmousedown="msd(3)" onmouseup="msu()"
+                                    ontouchstart="msd(3)" ontouchend="msu()" ontouchcancel="msu()">&#x2909;</button>
+                            <button class="button" title="Tilt down" type="button"  onmousedown="msd(4)" onmouseup="msu()"
+                                    ontouchstart="msd(4)" ontouchend="msu()" ontouchcancel="msu()">&#x2908;</button>
+                            <button class="button" title="Rotate clockwise" type="button"  onmousedown="msd(5)" onmouseup="msu()"
+                                    ontouchstart="msd(5)" ontouchend="msu()" ontouchcancel="msu()">&#x21BB;</button>
+                            <button class="button" title="Roate anticlockwise" type="button"  onmousedown="msd(6)" onmouseup="msu()"
+                                    ontouchstart="msd(6)" ontouchend="msu()" ontouchcancel="msu()">&#x21BA;</button>
+                            <button class="button" title="Faster" type="button"  onmousedown="msd(7)" onmouseup="msu()"
+                                    ontouchstart="msd(7)" ontouchend="msu()" ontouchcancel="msu()">>>></button>
+                            <button class="button" title="Slower" type="button"  onmousedown="msd(8)" onmouseup="msu()"
+                                    ontouchstart="msd(8)" ontouchend="msu()" ontouchcancel="msu()">></button>            
                         </div>
                         <br>    
                
@@ -46,38 +54,77 @@
                         <div>
                             <h2>Ptolemy's Moon</h2>
                         <ul>
-                            <li>Ptolemy bases his theory of the Sun on the work of Hipparchus, calibrated using observations from the Babylonian 
-                                Astronomical Diaries going back over 700 years.</li>
-                            <li>The ecliptic is the reference plane and the vernal equinox <b class='sbold'> ϒ</b> is the reference point.</li> 
-                            <li>Coordinates are described in terms of longitude (relative to <b class='sbold'>ϒ </b>) and latitude relative to the ecliptic. </li>
+                            <li>The Moon revolves around the Earth - this time we agree!</li>
+                            <li>The Moon is difficult because: </li>
+                            <li><ul>
+                                <li>Its orbit is eccentric and this causes its apparent angular velocity to vary.</li>
+                                <li>In addition, the eccentricity varies during the month due 
+                                    to the gravitational influence of the Sun. This secondary effect is called 
+                                    “Evection” and was discovered by Ptolemy. </li>
+                                <li>These variations in angular velocity are not the same each month. </li>
+                                 <li>The orbit is inclined to the ecliptic by about 5 degrees and the direction of 
+                                     the "tilt" (ascending node) changes by 0.053 degrees per day. We need to
+                                     calculate latitude as well as longitude </li>
+                                </ul></li>            
+                        <li>We can identify several different "periods":</li>
+                        <li><ul>
+                               <li>Synodic Month: time from New Moon to New Moon.</li>
+                               <li>Tropical Month: time to return to the same longitude along the ecliptic.</li>
+                                    <li>Anomalistic Month: time to return to the same angular velocity.</li>
+                                    <li>Draconic Month: time return to the same latitude relative to the ecliptic.</li>
+                            </ul> </li>                               
+                                
+                        <li>None of these periods are consistent month-to-month. We may only establish their mean values. </li>
+                        <li>Based on observations of Lunar Eclipses spanning nearly 800 years, Ptolemy was able to establish
+                            the mean value of these periods with sub-second accuracy.</li>
+                            
+                        <li>In the diagram:</li>
+                        <li><ul>
+                            <li> The ecliptic is the reference plane and the vernal equinox <b class='sbold'> ϒ</b> is the reference point.</li> 
+                                <li>Coordinates are described in terms of longitude (relative to <b class='sbold'>ϒ </b>) and latitude relative to the ecliptic. </li>
                             <li>The Earth is in the centre of the Universe and consists of the “spheres” of earth, water, air and fire, 
-                                as described by Aristotle. The Sun and Moon revolve round the Earth.</li>
-                            <li>The ecliptic mean Sun <b class='sbold'>S’</b> is positioned based on its mean angular velocity, west-to-east, relative 
-                                to the vernal equinox <b class='sbold'>ϒ</b>. </li>
-                            <li>An eccentric <b class='sbold'> E </b> is placed at distance <b class='sbold'> e </b> from the Earth in a direction 
+                                as described by Aristotle. </li>
+                            <li>The ecliptic mean Sun in the direction <b class='sbold'>S’</b> is positioned based on its mean angular velocity, 
+                                west-to-east, relative to the vernal equinox <b class='sbold'>ϒ</b>. </li>
+                            <li>A simple static eccentric will not account for the variations in angular velocity so an
+                                eccentric <b class='sbold'> E </b> is placed at distance <b class='sbold'> e </b> from the Earth in a direction 
                                 that rotates round Earth, east-to-west, with angular velocity equal the the synodic mean angular velocity 
-                                of the Moon, relative to the direction of the ecliptic mean Sun <b class='sbold'>S'</b>.
+                                of the Moon, relative to the direction of the ecliptic mean Sun <b class='sbold'>S'</b>.</li>
                            
-                          
-                             <ul><li> The Moon's synodic mean angular velocity is its average angular velocity to rotate from Full Moon to Full Moon. 
-                                    This was established using observations spanning over 700 years and is highly accurate.
-                                 </li></ul></li>
                             <li> A deferent circle is drawn with radius <b class='sbold'>R</b>, centred on <b class='sbold'>E</b>.</li>
-                            <li>A vector from Earth to the point <b class='sbold'>C</b> is drawn such that it rotates with uniform angular motion, west-to-east, 
+                            <li>A vector from Earth to the point <b class='sbold'>C</b> is drawn such that it rotates round Earth with uniform angular motion, west-to-east, 
                                 with angular velocity equal to the Moon's mean synodic period, relative to the direction of the ecliptic mean Sun <b class='sbold'>S'</b>.</li>
                             <li>An epicycle circle is drawn with radius <b class='sbold'>r</b>, centred on <b class='sbold'>C</b>.</li>
+                            </ul></li>
+                            <li>With this arrangement:</li>
+                            <li><ul>
+                            <li>The epicycle centre <b class='sbold'>C</b> moves closer and further from Earth thus modifying 
+                                    its effect on the apparent angular motion.</li>
+                            <li>The vector from Earth to <b class='sbold'>C</b> is in uniform motion, so rotation around the deferent
+                                    circle cannot be uniform relative to its centre <b class='sbold'>E</b>. That is “breaking the rules” 
+                                    according to Greek philosophy, but Ptolemy does not seem to worry and makes no comment about it. </li>
+                            <li>The calculation of the position of <b class='sbold'>C</b> is complex. Ptolemy used a simplified, but accurate, 
+                                    method when preparing his tables. I use a similar method to draw the motion of <b class='sbold'>C</b> 
+                                    in the diagram.</li> 
+                            <li>The values <b class='sbold'>R=49.6833</b> and <b class='sbold'>e=10.3166</b> and <b class='sbold'>r=5.25</b>
+                                were established in arbitrary units that have no physical meaning. </li>
+                                </ul></li>
+                            <li> Simple rotation around the epicycle would not satisfy the  the observed motion at first and last quarter,
+                                so another construct is used:</li>
+                            <li><ul>        
                             <li>The point <b class='sbold'>E'</b> is established directly opposite <b class='sbold'>E</b>. </li> 
                             <li>The Moon rotates round the epicycle, east-to-west, at an angular rate equal to its mean anomalistic 
-                                period, relative to the direction of the vector <b class='sbold'>E'-C</b>. 
-                                <ul><li>The Anomalistic period is the average period to return to the same observed 
-                                        angular velocity.</li></ul></li>
+                                period, relative to the direction of the vector <b class='sbold'>E'-C</b>. </li>
+                                </ul></li>
+                        <li>And finally, to supply the variations of latitude: </li>
+                        <li><ul>
                             <li>The entire structure is tilted at an angle of 5 degrees to the ecliptic, 
-                                representing the inclination of the Moon's orbit.The direction of the tilt (ascending node) migrates by
-                                0.053 degrees per day east-to-west.</li> 
-                            <li>Ptolemy established <b class='sbold'>e=10.31666, R= 49.68333 and r=5.52</b> using arbitrary units of measurement. </li>
-                            <li>The animation starts on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
-                                Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
-                                were calibrated from observations beginning near that time.
+                                representing the inclination of the Moon's orbit.</li>
+                            <li>The direction of the tilt (ascending node <b class='sbold'>&Omega;</b> ) migrates by 0.053 degrees per day east-to-west.</li> 
+                            </ul></li>    
+                        <li>The animation starts on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
+                            Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
+                            were calibrated from observations beginning near that time.</li>
                         </ul>
                         <br>
                         <br>
