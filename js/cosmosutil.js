@@ -277,10 +277,16 @@ function Planet (name, colour, size, rad, per, inc, ascen) {
     this.sino = Math.sin(this.ascend);
     this.cosi = Math.cos(this.incl);
     this.sini = Math.sin(this.incl);
+    
+   /* Calculate anomaly of this object */
+    this.doAnomaly = function (elapseYears) {
+        this.anomaly = (this.longAtEpoch + elapseYears * year * this.meanDailyMotion) % pi2;  
+        return this.anomaly;
+    };
   
-    /* Calculate position of this object */
+   /* Calculate position of this object */
     this.doPosition = function (elapseYears, adjust) {    
-        this.anomaly = (adjust + this.longAtEpoch + elapseYears * year * this.meanDailyMotion) % pi2;       
+       this.anomaly = (adjust + this.longAtEpoch + elapseYears * year * this.meanDailyMotion) % pi2;  
         if (this.method === 1) {
             this.position.z = this.distance * this.sini * Math.sin(this.anomaly - this.ascend);
             let xy = Math.sqrt(this.distance * this.distance - this.position.z * this.position.z);

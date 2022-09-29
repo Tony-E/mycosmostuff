@@ -1,9 +1,10 @@
 
 /* 
- * This script shows the Sun according to Ptolemy's Almagest.
+ * This script shows the Moon according to Ptolemy's Almagest.
  */
 /* global pi2, display, elapse */
-var year = 365.246667;           // Days in tropical year
+var year = 365.246667;             // Days in tropical year
+var evection = toRadians(11.919);  // delta anomaly for non-uniform motion
         
 function setUpPlanets() {
    // Planet (name, colour, size, rad, per, inc, ascen)
@@ -21,7 +22,6 @@ function setUpPlanets() {
     nd = new Planet (" ☊","55ff55",0,1.2,0,0,0);
     nd.longAtEpoch = toRadians(317.16);
     nd.meanDailyMotion = toRadians(- 0.0529687);
-    
     
    /* The mean sun rotates in uniform circular motion once per tropical year */
     sun   = new Planet("S'","#ffff00", 0, 1.2, 1, 0, 0);
@@ -84,33 +84,32 @@ function setUpPlanets() {
         display.drawOrbit(eq);
         
       /* Draw ascending Node */  
-      let node = doNode(elapse);
-      nd.doPosition(elapse,0);
-      display.drawPlanet(nd);
-      display.join(earth.position,nd.position,"#888888");
+       let node = doNode(elapse);
+       nd.doPosition(elapse,0);
+       display.drawPlanet(nd);
+       display.join(earth.position,nd.position,"#888888");
       
-      /* Draw eccentr */
+      /* Draw eccentric E */
        ec.ascend = node;
        ec.doPosition(elapse,0);
        display.drawPlanet(ec);
        display.drawOrbit(ec);
        
-       /* Longitude of Moon 
-       longMoon.doPosition(elapse);
-       display.drawPlanet(longMoon);
-       display.join(earth.position,longMoon.position,"#9999ff"); */
-       
-       /* deferent circle with C */
+      /* calc adjutment due to non uniform motion */
+       deferent.doAnomaly(elapse); // anomaly assuming unifom motion
+       eadjust = evection * Math.sin(deferent.anomaly - ec.anomaly);
+               
+      /* deferent circle with C */
        deferent.ascend = node;
        deferent.eccentre = ec.position;
-       deferent.doPosition(elapse,0);
+       deferent.doPosition(elapse,eadjust);
        display.drawPlanet(deferent);
        display.drawOrbit(deferent);
        
-       /* vector Earth - C */
+      /* vector Earth - C */
        display.join(earth.position, deferent.position, "#FFAAFF");
        
-       /* draw the point E' opposite the eccentre */
+      /* draw the point E' opposite the eccentre */
        ecx.ascend = node;
        ecx.position = ec.position;
        ecx.position.mult(-1);
@@ -118,12 +117,12 @@ function setUpPlanets() {
        /* vector from E' to C */
        display.join(ecx.position,deferent.position, "#88FF88");
        
-       /* find longitude of E'-C */
+      /* find longitude of E'-C */
        let xy = new CosmoPoint(deferent.position.x, deferent.position.y, 0);
        xy.minus(ecx.position);
        let av = Math.atan2(xy.x,xy.y); // angle of vector E'-C
        
-       /* epicycle with Moon */
+      /* epicycle with Moon */
        epi.ascend = node;
        epi.eccentre = deferent.position;
        epi.doPosition(elapse,av); //av
@@ -131,7 +130,7 @@ function setUpPlanets() {
        display.drawOrbit(epi);
        
        
-       /* the node of inclination nade at epoch 317.16 degrees + motion
+       /* the node of inclination at epoch 317.16 degrees + motion
         * -0.0529687/day.
         * @param {type} elapse
         * @returns {undefined}
