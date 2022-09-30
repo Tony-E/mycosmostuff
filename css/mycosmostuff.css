@@ -39,7 +39,7 @@ table tr td.content {
 }
 
 table tr td.rightScroll {
-   width:40%;
+   width:50%;
    height:90%;
    background-color:#111133;
    display:table-cell;
@@ -87,7 +87,10 @@ table tr td.rightScroll div li {
 }
 .ctlbuttons {
     text-align: center;   
-}
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+     }
 .sbold {
     color: #44ff44;
 
