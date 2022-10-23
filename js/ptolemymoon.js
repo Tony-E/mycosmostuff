@@ -47,14 +47,14 @@ function setUpPlanets() {
     deferent.longAtEpoch = 0.7219729;
     
    /* centre of epicycle */
-   epc = new Planet("λm","#9999ff",0,0.7,1,toRadians(5),0);
-   epc.meanDailyMotion =  toRadians(0.985635 + 12.190746936);
-   epc.longAtEpoch = 0.7219729;
+    epc = new Planet("λm","#9999ff",0,0.7,1,toRadians(5),0);
+    epc.meanDailyMotion =  toRadians(0.985635 + 12.190746936);
+    epc.longAtEpoch = 0.7219729;
    
    /* epicycle */
-   epi = new Planet("Moon","#FF88FF",2,0.09,0,toRadians(5),0);
-   epi.meanDailyMotion = 0; //toRadians(-13.0647);
-   epi.longAtEpoch = toRadians(41.366);
+    epi = new Planet("Moon","#FF88FF",2,0.09,0,toRadians(5),0);
+    epi.meanDailyMotion = 0; //toRadians(-13.0647);
+    epi.longAtEpoch = toRadians(41.366);
    
  
     
@@ -65,6 +65,7 @@ function setUpPlanets() {
     //jupiter = new Planet("Jupiter", "#aaddff", 7, 2.4, 11.9,0,0);
     //saturn = new Planet("Saturn", "#ddddff", 7, 2.8, 29.44,0,0);
     //stars
+    
     planets = [ sun];
     rate = rate/20; 
 }

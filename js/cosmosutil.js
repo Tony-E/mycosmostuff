@@ -244,7 +244,8 @@ function Screen() {
     this.drawInfo = function (elapse, long, lat) {
        this.ctx.strokeStyle  = "#FFFFAA";
        let text = "JD: ";
-       text += (1448273.00000 + elapse).toFixed(2);
+       let jd = 1448273.0 + elapse;
+       text += jd.toFixed(2);
        text += "   Long: " + toDegrees(long).toFixed(1) + "° ";
        text += "    Lat: " + toDegrees(lat).toFixed(1) + "° ";
        this.ctx.fillText(text,20, this.height-20);

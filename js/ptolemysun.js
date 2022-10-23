@@ -3,7 +3,6 @@
  * This script shows the Sun according to Ptolemy's Almagest.
  */
 /* global pi2, display, elapse */
-var year = 365.246667;           // Days in tropical year
 
 /* Planet object takes parameters:  (name, colour, size, rad, per, inc, ascen)*/
 function setUpPlanets() {
@@ -46,7 +45,7 @@ function setUpPlanets() {
 
    /* draw the animation */     
     function doAnimation(elapse) {
-       /* Draw Earth */
+       /* Draw Earth */ 
         display.drawPlanet(fire);
         display.drawPlanet(air);
         display.drawPlanet(water);
@@ -63,6 +62,8 @@ function setUpPlanets() {
         display.drawOrbit(sun);
        /* Draw Earth-Sun vector */
         display.join(earth.position, sun.position, sun.colour);
+       /* Draw date and coordinates */
+        display.drawInfo(elapse, sun.anomaly, 0.0);
     }
     
     /* Function to show multiple planets */
