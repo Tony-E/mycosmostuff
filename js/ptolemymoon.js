@@ -3,24 +3,28 @@
  * This script shows the Moon according to Ptolemy's Almagest.
  */
 /* global pi2, display, elapse */
-var year = 365.246667;             // Days in tropical year
-var evection = toRadians(11.919);  // delta anomaly for non-uniform motion
+//var year = 365.246667;             // Days in tropical year
+
+var evection = toRadians(11.919);    // delta anomaly for non-uniform motion
         
 function setUpPlanets() {
    // Planet (name, colour, size, rad, per, inc, ascen)
-   /* Earth spheres */
+   /* Earth spheres, radii chosen to give small concentric circles */
     earth = new Planet("", "#663300", 3, 0,0,0);
     water = new Planet("", "#8888ff", 6, 0,0,0);
     air   = new Planet("", "#aabbcc", 8,0,0,0);
     fire  = new Planet("Earth", "#f58f00", 10,0,0,0);
     
-   /* eq is a dummy planet for the vernal equinox */
-    eq = new Planet (" ϒ","ffffff",0,0,0,0);
+   /* eq is a dummy planet for the vernal equinox, radius chosen to put it just
+    * outside the deferent. */
+    eq = new Planet (" ϒ","#ffffff",0,0,0,0);
     eq.position.setValue(1.2,0,0);
     
-   /* nd is a dummy planet representing the longitude of ascending node */
-    nd = new Planet (" ☊","55ff55",0,1.2,0,0,0);
-    nd.longAtEpoch = toRadians(317.16);
+   /* nd is a dummy planet representing the longitude of ascending node
+    * radius to put it outside the deferent. Parameters taken from Pedersen
+    * but  */
+    nd = new Planet (" ☊","#ffffff",0,1.2,0,0,0);
+    nd.longAtEpoch = toRadians(84.25);
     nd.meanDailyMotion = toRadians(- 0.0529687);
     
    /* The mean sun rotates in uniform circular motion once per tropical year */
@@ -34,7 +38,7 @@ function setUpPlanets() {
     ec.longAtEpoch = toRadians(268.816);  // Ec longitude at epoch (radians)
     ec.meanDailyMotion = toRadians(0.985635 - 12.190746936); // Mean daily motion
   
-    /*ecx is the opoosite of the deferent circle */
+    /*ecx is opoosite E */
     ecx   = new Planet("E'","#9999ff", 1, 0.17686, 1, toRadians(5), 0);
     
    /* deferent circle */ 
@@ -99,7 +103,7 @@ function setUpPlanets() {
        deferent.doAnomaly(elapse); // anomaly assuming unifom motion
        eadjust = evection * Math.sin(deferent.anomaly - ec.anomaly);
                
-      /* deferent circle with C */
+      /* deferent circle with C on it */
        deferent.ascend = node;
        deferent.eccentre = ec.position;
        deferent.doPosition(elapse,eadjust);
@@ -129,30 +133,22 @@ function setUpPlanets() {
        display.drawPlanet(epi);
        display.drawOrbit(epi);
        
+      /*draw info*/
+       let long = Math.atan2(epi.position.y, epi.position.x);
+       let lat = Math.asin(epi.position.z/epi.position.mag());
+       display.drawInfo(elapse,long, lat);
        
-       /* the node of inclination at epoch 317.16 degrees + motion
-        * -0.0529687/day.
+       
+       /* the node of inclination at epoch 84.25 degrees at epoch
+        * -0.0529687836/day.
         * @param {type} elapse
         * @returns {undefined}
         */
        function doNode(elapse) {
-           return (toRadians(317.16) - elapse * year * toRadians(0.0529687)) % pi2;
+           return (toRadians(84.25) - elapse * toRadians(0.0529687836)) % pi2;
        }
        
-       /* equation 6.40 in P&J
-       let e = ec.distance;
-       let R = deferent.distance;
-       let g = 1.850394 * longMoon.anomaly * toRadians(13.17638221);  // 2 Ws/Wt 
-       let h = Math.sin(g);
-       let rho = e*Math.cos(g)-Math.sqrt(R*R - e*e*h*h);
-       epc.distance = rho;
-       epc.doPosition(elapse);
-       display.drawPlanet(epc);
        
-       rho = e*Math.cos(g)+Math.sqrt(R*R - e*e*h*h);
-       epc.distance = rho;
-       epc.doPosition(elapse);
-       display.drawPlanet(epc); */
        
     }
     

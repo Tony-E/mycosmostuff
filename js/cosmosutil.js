@@ -1,8 +1,8 @@
 /* ****************************************************************************
- * These are some utility routines that support Cosmos
+ * These are some utility routines that support MyCosmos
  */
 
-/* global pi2, showNames, drawOrbits, year */
+/* global pi2, showNames, drawOrbits */
 
 /******************************************************************************
  *                             CosmoPoint 
@@ -92,12 +92,12 @@ function ScreenPoint(x,y) {
  */
 function Screen() {
     this.canvas = document.getElementById("layer1"); // The canvas in the DOM
-    this.ctx = this.canvas.getContext("2d");         // drawing contxt  
-    this.theText = document.getElementById("thetext");
-    this.reDraw = true;     // everything needs to be redrawn (to start)
+    this.ctx = this.canvas.getContext("2d");         // The drawing contxt  
+    //this.theText = document.getElementById("thetext");
+    this.reDraw = true;          // everything needs to be redrawn (to start)
     
-   /* width & height of canvas should be 75% of screen width */ 
-    this.width = Math.round(0.75 * window.innerWidth);
+   /* width & height of canvas should be based on screen width */ 
+    this.width = Math.round(0.70 * window.innerWidth);
     this.height = this.width;
     this.oldWidth = this.width;  // record screen size at startup
     this.scale=200;              // default scale in pixes per AU 
@@ -106,7 +106,7 @@ function Screen() {
     this.centx;           // centre x and y pixels
     this.centy;
     
-    this.up=0;           // user control values up, left, tilt, rotate
+    this.up=0;            // user control values up, left, tilt, rotate
     this.left=0;
     this.tilt=0;
     this.rotate=0;
@@ -118,7 +118,7 @@ function Screen() {
     
     
     // working areas for transpositions
-    this.ds = new CosmoPoint(0,0,0);   // 3d space position of orbit point
+    this.ds = new CosmoPoint(0,0,0);   // 3d space position of orbit or point
     this.d3 = new CosmoPoint(0,0,0);   // rotated 3d space position
     this.d2 = new ScreenPoint(0,0);    // screen projected position
   
@@ -132,7 +132,7 @@ function Screen() {
     
     // clear the background canvas
     this.clearScreen = function () {
-        this.ctx.fillStyle = "#111133";
+        this.ctx.fillStyle = "#101033";
         this.ctx.beginPath();
         this.ctx.rect(0,0,this.width,this.height);
         this.ctx.fill();
@@ -140,11 +140,12 @@ function Screen() {
   
     // convert a 3D space coord to a 2D screen pixel coord
     this.toScreen = function (space) {
-        this.d3.y = space.y * this.cosr - space.x * this.sinr;     // rotate
+        // rotate 3D space coord
+        this.d3.y = space.y * this.cosr - space.x * this.sinr;     
         this.d3.x = space.x * this.cosr + space.y * this.sinr;
         this.d3.z = space.z;  
-        
-        this.d2.x =  this.centx - this.left    // scale, tilt and apply up and left
+        // convert to 2d screen with tilt, up, left 
+        this.d2.x =  this.centx - this.left    
                 + (this.scale * this.d3.x);    
         this.d2.y = this.centy - this.up
                 -(this.scale * (this.cost*this.d3.y + this.sint*this.d3.z));  
@@ -172,8 +173,8 @@ function Screen() {
        this.ctx.strokeStyle = bod.colour;
        this.ctx.beginPath();
        
-       /* the circle is constructed with a set of short lines so that the entire
-        * figure can be transposed to the screen viewing angle */
+      /* the circle is constructed with a set of short lines so that the entire
+       * figure can be transposed to the screen viewing angle */
        let dt = 0.05;
        for (let t=0; t<(pi2+dt); t=t+dt) {
           this.ds.z = bod.distance * bod.sini * Math.sin(t - bod.ascend);
@@ -220,9 +221,9 @@ function Screen() {
         
     };
     
-     // canvas has been resized
-     this.reSize = function() {
-        reDraw = true;                      // everything will have to be redrawn
+    /* canvas has been resized */
+    this.reSize = function() {
+        reDraw = true;         // everything will have to be redrawn
        /* get new window size and set canvas height and width */ 
         this.width = Math.round(0.65 * innerWidth);
         this.height = Math.round(0.75 * innerHeight);
@@ -240,6 +241,14 @@ function Screen() {
         this.ctx.font = "12px Verdana";      
      };
      
+    this.drawInfo = function (elapse, long, lat) {
+       this.ctx.strokeStyle  = "#FFFFAA";
+       let text = "JD: ";
+       text += (1448273.00000 + elapse).toFixed(2);
+       text += "   Long: " + toDegrees(long).toFixed(1) + "° ";
+       text += "    Lat: " + toDegrees(lat).toFixed(1) + "° ";
+       this.ctx.fillText(text,20, this.height-20);
+    };
 }
 
 /* Planet object hold properties of planet and may used for other symbols
@@ -260,6 +269,7 @@ function Planet (name, colour, size, rad, per, inc, ascen) {
     this.tOffset = new ScreenPoint(8,8);
     this.size = size;
     this.position = new CosmoPoint(0,0,0);
+    this.latitude = 0;
     this.eccentre = new CosmoPoint(0,0,0);
     this.method = 1;               // 1 has eccentre
     this.period = per;             // orbital period in years
@@ -268,7 +278,7 @@ function Planet (name, colour, size, rad, per, inc, ascen) {
     this.ga;                       // eccentric angle
     this.incl = inc;               // inclination
     this.ascend = ascen;           // ascending node;
-    this.anomaly;                  // current anomaly (radians)
+    this.anomaly;                  // anomaly (radians)relative to centre
     this.longAtEpoch;              // mean longitude at epoch
     this.meanDailyMotion;          // Mean daily motion
     this.orbit = new Circle();
@@ -279,22 +289,27 @@ function Planet (name, colour, size, rad, per, inc, ascen) {
     this.sini = Math.sin(this.incl);
     
    /* Calculate anomaly of this object */
-    this.doAnomaly = function (elapseYears) {
-        this.anomaly = (this.longAtEpoch + elapseYears * year * this.meanDailyMotion) % pi2;  
+    this.doAnomaly = function (elapseDays) {
+        this.anomaly = (this.longAtEpoch + elapseDays * this.meanDailyMotion) % pi2;  
         return this.anomaly;
     };
   
    /* Calculate position of this object */
-    this.doPosition = function (elapseYears, adjust) {    
-       this.anomaly = (adjust + this.longAtEpoch + elapseYears * year * this.meanDailyMotion) % pi2;  
+    this.doPosition = function (elapseDays, adjust) {    
+        this.anomaly = (adjust + this.longAtEpoch + elapseDays * this.meanDailyMotion) % pi2;  
         if (this.method === 1) {
-            this.position.z = this.distance * this.sini * Math.sin(this.anomaly - this.ascend);
-            let xy = Math.sqrt(this.distance * this.distance - this.position.z * this.position.z);
-            this.position.x = xy * Math.cos(this.anomaly);
-            this.position.y = xy * Math.sin(this.anomaly);
+            let dNode = Math.sin(this.anomaly-this.ascend);
+            this.latitude =  this.incl * dNode;
+            this.position.z = this.distance * this.sini * dNode;
+            this.position.x = this.distance * Math.cos(this.anomaly);
+            this.position.y = this.distance * Math.sin(this.anomaly);
             this.position.plus(this.eccentre);
         }
+        
     };
+    
+
+    
 }
 
 /***********************************************************************
@@ -321,5 +336,9 @@ function Circle () {
 
 function toRadians (deg) {
     return deg*Math.PI/180;
+}
+
+function toDegrees (rad) {
+    return rad*180/Math.PI;
 }
   
