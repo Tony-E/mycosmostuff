@@ -31,14 +31,22 @@ and open the template in the editor.
                         <div class="ctlbuttons">
                             <button class="button" title="Stop/start the animation" id="stopStart" type="button" onclick="stopStart()">&#x25A0;</button>
                             <button class="button" title= "Reverse direction" type="button"  onclick="reverse()">&#x21D4;</button>
-                            <button class="button" title="Zoom in" type="button"  onmousedown="msd(1)" onmouseup="msu()">&#x2295;</button>
-                            <button class="button" title="Zoom out" type="button"  onmousedown="msd(2)" onmouseup="msu()">&#x2296;</button>
-                            <button class="button" title="Tilt up" type="button"  onmousedown="msd(3)" onmouseup="msu()">&#x2909;</button>
-                            <button class="button" title="Tilt down" type="button"  onmousedown="msd(4)" onmouseup="msu()">&#x2908;</button>
-                            <button class="button" title="Rotate clockwise" type="button"  onmousedown="msd(5)" onmouseup="msu()">&#x21BB;</button>
-                            <button class="button" title="Roate anticlockwise" type="button"  onmousedown="msd(6)" onmouseup="msu()">&#x21BA;</button>
-                            <button class="button" title="Faster" type="button"  onmousedown="msd(7)" onmouseup="msu()">>>></button>
-                            <button class="button" title="Slower" type="button"  onmousedown="msd(8)" onmouseup="msu()">></button>            
+                            <button class="button" title="Zoom in" type="button"  onmousedown="msd(1)" onmouseup="msu()" 
+                                    ontouchstart="msd(1)" ontouchend="msu()" ontouchcancel="msu()">&#x2295;</button>
+                            <button class="button" title="Zoom out" type="button"  onmousedown="msd(2)" onmouseup="msu()"
+                                    ontouchstart="msd(2)" ontouchend="msu()" ontouchcancel="msu()">&#x2296;</button>
+                            <button class="button" title="Tilt up" type="button"  onmousedown="msd(3)" onmouseup="msu()"
+                                    ontouchstart="msd(3)" ontouchend="msu()" ontouchcancel="msu()">&#x2909;</button>
+                            <button class="button" title="Tilt down" type="button"  onmousedown="msd(4)" onmouseup="msu()"
+                                    ontouchstart="msd(4)" ontouchend="msu()" ontouchcancel="msu()">&#x2908;</button>
+                            <button class="button" title="Rotate clockwise" type="button"  onmousedown="msd(5)" onmouseup="msu()"
+                                    ontouchstart="msd(5)" ontouchend="msu()" ontouchcancel="msu()">&#x21BB;</button>
+                            <button class="button" title="Roate anticlockwise" type="button"  onmousedown="msd(6)" onmouseup="msu()"
+                                    ontouchstart="msd(6)" ontouchend="msu()" ontouchcancel="msu()">&#x21BA;</button>
+                            <button class="button" title="Faster" type="button"  onmousedown="msd(7)" onmouseup="msu()"
+                                    ontouchstart="msd(7)" ontouchend="msu()" ontouchcancel="msu()">>>></button>
+                            <button class="button" title="Slower" type="button"  onmousedown="msd(8)" onmouseup="msu()"
+                                    ontouchstart="msd(8)" ontouchend="msu()" ontouchcancel="msu()">></button>            
                         </div>
                         <br>    
                
@@ -57,7 +65,7 @@ and open the template in the editor.
                             <li>The Sun revolves around the Earth in a "deferent" circle.</li>
                             <li>The ecliptic is the reference plane and the vernal equinox <b class='sbold'>ϒ</b> is the reference point.</li> 
                             <li>Coordinates are described in terms of longitude (relative to <b class='sbold'>ϒ</b>) and latitude relative to the ecliptic. 
-                                So, there is no problem with calculating latitude – it is always zero for the Sun. </li>   
+                                So latitude is always zero for the Sun. </li>   
                             <li>One year is the time from equinox to equinox, i.e. one tropical year. 
                                 (The sidereal year - return to same point relative to the stars - is not used because 
                                 the “sphere of fixed stars” is believed to rotate slowly to compensate for what 
@@ -72,7 +80,7 @@ and open the template in the editor.
                             <li>This point is called the eccentric, and it needs to be placed 1/24th of the radius of the circle 
                                 in the the direction of longitude 65.5° <b class='sbold'>(λa)</b>. This angle was assumed to be fixed but we now know it moves 
                                 very slowly due to the precession of the Earth’s orbit.</li>
-                            <li>The animation starts on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
+                            <li>The animation starts at noon on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
                                 Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
                                 were calibrated from observations beginning near that time.
                         </ul>
