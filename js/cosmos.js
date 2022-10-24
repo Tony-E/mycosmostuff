@@ -17,8 +17,8 @@ var saveY;               // -"-
 
 var running;             // true when animation is running
 var lastTime;            // timestamp last time thru the show loop
-var elapse = 0;          // time (ms) since start
-var rate;                // run rate in radians per millisecond.
+var elapse = 0;          // time (days) since start
+var rate;                // run rate in days per millisecond.
 
 var pi2 = 2*Math.PI;     // useful value
 
@@ -41,7 +41,7 @@ function init() {
     running = true;         // animation is running
     elapse = 0;             // elapse time is zero at start
     lastTime = 0;           // no previous timestamp
-    rate = pi2/100000;     // initial run rate 20 seconds per year
+    rate = 0.01;            // initial run rate .1 second per day
     drawOrbits = true;      // draw orbits and lines
     showNames = true;       // show object names
     mouseDown = 0;          // no mouse presses
@@ -69,7 +69,8 @@ function init() {
     display.clearScreen();
     checkMouse();
    
-   /* call the function that builds the image. This must be defined in
+   /* call the function that builds the image. This must be defined in the js
+    * for the object.
     * @returns {undefined}another script.
     */ 
    doAnimation(elapse);
@@ -77,7 +78,6 @@ function init() {
   /* display and go to next frame */ 
    requestAnimationFrame(show);
  }
-    
     
 /* functions that respond to buttons */
  function stopStart() {
