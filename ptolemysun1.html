@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>Cosmos - Simulation of Ptolemy's Sun</title>
@@ -16,9 +11,9 @@ and open the template in the editor.
         <link type="text/css" rel="stylesheet" href="css/mycosmostuff.css">
         <script src="js/cosmos.js"></script>
         <script src="js/cosmosutil.js"></script>
-        <script src="js/ptolemysun.js"></script>
+        <script src="js/cosmoplanets.js"></script>
     </head>
-     <body onresize="reSize()"> 
+    <body onresize="reSize()"> 
         <table> 
             <tbody> 
                 <tr> 
@@ -58,32 +53,41 @@ and open the template in the editor.
                     <td class="rightScroll"> 
                         <div>
                             <h2 class='sideTitle'> Ptolemy's Sun </h2>
-                        <ul> 
-                            <li>Ptolemy bases his theory of the Sun on the work of Hipparchus. </li>
-                            <li>The Earth is in the centre of the Universe and consists of the “spheres” of earth, water, air and fire, 
-                                as described by Aristotle.</li>  
-                            <li>The Sun revolves around the Earth in a "deferent" circle.</li>
-                            <li>The ecliptic is the reference plane and the vernal equinox <b class='sbold'>ϒ</b> is the reference point.</li> 
-                            <li>Coordinates are described in terms of longitude (relative to <b class='sbold'>ϒ</b>) and latitude relative to the ecliptic. 
-                                So latitude is always zero for the Sun. </li>   
-                            <li>One year is the time from equinox to equinox, i.e. one tropical year. 
-                                (The sidereal year - return to same point relative to the stars - is not used because 
-                                the “sphere of fixed stars” is believed to rotate slowly to compensate for what 
-                                we now call "precession of the equinoxes". </li>
+                        <p>Ptolemy based his theory of the Sun on the work of Hipparchus. </p>  
+                        <p>The Earth is in the centre of the Universe and consists of the “spheres” of earth, water, air and fire, 
+                                as described by Aristotle.</p>  
+                        <p>The ecliptic is the reference plane and the vernal equinox <b class='sbold'>ϒ</b> is the reference point.
+                           Coordinates are described in terms of degrees longitude (relative to <b class='sbold'>ϒ</b>) and latitude relative to the ecliptic. 
+                           Latitude is therefore always zero for the Sun. </p> 
+                        
+                        <p>The Sun rotates round the Earth once per year. However, the apparent angular velocity of the
+                           Sun varies during the year. We now know this is due to the eccentricity of Earth’s orbit 
+                           round the Sun. This effect can be approximated by having the Sun move at uniform speed round
+                           a circle with its centre some distance from the centre of the Earth. This is known as a 
+                           deferent circle.</p>
+                        <p>One year is the time for the Sun to return to the same ecliptic longitude - one tropical year. 
+                           The sidereal year, return to the same point relative to the stars, is not used. It was
+                           believed that the “sphere of fixed stars” rotated round Earth one degree per century to 
+                           account for what we now call "precession of the equinoxes". </p>
+                        <ul>
                             <li>Ptolemy uses Hipparchus’s year which is 6 minutes too 
-                                long due to measurement inaccuracy and refraction – 365d 5h 55m 12s. The 6m has 
+                                long due to measurement errors – 365d 5h 55m 12s. The 6m has 
                                 consequences for the accuracy of all his planetary motion models.</li>
-                            <li>The apparent angular velocity of the Sun varies during the year. We now know this is due to the 
-                                eccentricity of Earth’s orbit round the Sun. The effect can be approximated by having the Sun 
-                                move at uniform speed round the a point <b class='sbold'>E</b> some distance from the centre of the Earth. 
-                                (Zoom in to see.) </li>
-                            <li>This point is called the eccentric, and it needs to be placed 1/24th of the radius of the circle 
-                                in the the direction of longitude 65.5° <b class='sbold'>(λa)</b>. This angle was assumed to be fixed but we now know it moves 
-                                very slowly due to the precession of the Earth’s orbit.</li>
-                            <li>The animation starts at noon on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
-                                Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
-                                were calibrated from observations beginning near that time.
                         </ul>
+                        <p> The Sun moves at uniform speed round a deferent circle centred at point <b class='sbold'>D</b> 
+                            some distance from the centre of Earth.</p>
+                        <ul>
+                            <li>This point is called the eccentric, and it needs to be placed 1/24th of the radius of the deferent circle 
+                                in the the direction of longitude 65.5° <b class='sbold'>(λa)</b>. This angle was assumed to be fixed but 
+                                we now know it moves very slowly due to the precession of the Earth’s orbit.</li>
+                        </ul>
+                        <p>The mean Sun <b class='sbold'>λm☉</b> shows the longitude the Sun would have if it rotated round
+                            Earth at a uniform angular rate.</p>  
+                                        
+                        <p>The animation starts at noon on the 1st day of the month of Thoth in the first year of the reign of Babylonian King
+                            Nabonassar.(Feb 26th 747BC). This is the "epoch" used for Ptolemy's planetary models as they
+                            were calibrated from observations beginning near that time. </p>
+                       
                         <br>
                         <br>
                     </div> 
@@ -95,7 +99,7 @@ and open the template in the editor.
             </tbody> 
         </table>  
         <script>
-            init();
+            init(3);
         </script>
     </body>
 </html>
