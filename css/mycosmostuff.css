@@ -4,7 +4,9 @@ body, td, div, p, a {
 
 html, body {
    height:100%;
-   overflow:hidden;
+   
+   background-color:#050533;
+   color:#eeeeff;
 }
 
 .indextext {
@@ -25,7 +27,7 @@ table {
 }
 
 table tr td.header {
-   background-color:#111133;
+   background-color:#050533;
    color: #ffffbb;
    padding:5px;
    text-align:center;
@@ -34,14 +36,14 @@ table tr td.header {
 table tr td.content {
    text-align:center;
    vertical-align:top;
-   background-color:#111133;
+   background-color:#050533;
    position:relative;
 }
 
 table tr td.rightScroll {
    width:50%;
    height:90%;
-   background-color:#111133;
+   background-color:#050533;
    display:table-cell;
 }
 
@@ -82,7 +84,7 @@ table tr td.rightScroll div li {
     width: 100%;
     text-align: left;
     font-size: 14px;
-    color: #0000ff;
+    color: #eeeeff;
     padding: 5px;
 }
 .ctlbuttons {
@@ -96,12 +98,14 @@ table tr td.rightScroll div li {
     font-family: "Times New Roman", Times, serif;
   
 }
-
+   
 .columns {
        columns: 100px 2;
        padding-left:20%;
        padding-right:20%;
        column-gap: 30px;;
+       background-color:#050533;
+       color: #eeeeff;
 }
 .columns ul li {
     padding: 20px;
@@ -110,4 +114,7 @@ table tr td.rightScroll div li {
 
 .columns a {
     color: #FFFFAA;
+}
+.middle {
+    text-align: center;
 }
