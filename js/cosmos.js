@@ -87,9 +87,9 @@ function init(n) {
    //elapse = 318891.395833;             // Saturn calibration            
    //elapse = 323228.7810412;            // Moon clibration
    //elapse = 321411.7604166;            // Venus calibration
-   elapse = 0;                         // Freeze at epoch
+   // elapse = 0;                        // Freeze at epoch
    //elapse = 320901.0833333;            // Sun calibration 132SD Sep 25 14:00 LT
-   //elapse = 133605.24;                  // lunar eclipse in 382BC
+   //elapse = 133605.24;                 // lunar eclipse in 382BC
    
    /* call the function that builds the image. doAnimation(elapse) must be 
     * defined in the javascript file for the object to be displayed.
