@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Cosmos - Simulation of Ptolemy's Cosmic Model</title>
+        <title>Ptolemy's Almagest - A Simulation</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Simulation of Cosmic models.">
-        <meta property="og:title" content="Cosmos - Simulations of Planetary Motions.">
+        <meta name="description" content="Simulation of Ptolemy's Almagest.">
+        <meta property="og:title" content="Cosmos - A Simulations of Ptolemy's Model.">
         <meta property="og:image" content="images.xdzr.gif">
-        <meta name="twitter:card" content="Cosmos - Simulation of plantary motions.">
+        <meta name="twitter:card" content="Cosmos - Simulation of Ptolemy's model.">
         <link type="text/css" rel="stylesheet" href="css/mycosmostuff.css">
         
     </head>
     <body>
     <div>  
-       <h1 class="middle">Cosmic simulations</h1>
-       <h2 class="middle">Ptolemy's Cosmos</h2>
+       <h1 class="middle">Ptolemy's Almagest</h1>
+       <h2 class="middle">A simulation of Ptolemy's model of the cosmos</h2>
        <p class="middle">Here I present a set of animated diagrams representing Ptolemy's 
-           models of the planetary orbits.</p> <p class="middle"> Go straight to the animations here, or see more explanation below.</p>
-       <div class="columns">
-        
+           models of the planetary orbits.</p> 
+       <div class="columns"> 
             <p> <a href="ptolemysun1.html" target="_blank">Sun</a></p>
             <p> <a href="ptolemymoon1.html" target="_blank">Moon</a></p>
             <p> <a href="ptolemymercury1.html" target="_blank">Mercury</a></p>
@@ -33,40 +32,46 @@
        <div class="columns">  
            
             <p> Claudius Ptolemy was an Astronomer and Mathematician living in Egypt around 100-170AD. His most
-                famous work is the Almagest(المجسطي),"the greatest", in which he describes a model of the 
+                famous work is called the Almagest,"The Greatest", in which he describes a model of the 
                 Solar System in great detail.</p> 
-            <p> The Almagest is very complicated and based on ancient mathematics and date/time systems. Very few
-                people have actually read it, resulting in many false and over-simple explanations. </p>
-            <p> Various translations have existed
-                over the centuries and the diagrams here are based on <b>Ptolemy's Almagest</b> by G. J. Toomer, Duckworth, 1984 and
-                <b>A Survey of the Almagest by Olaf Pedersen</b> (1974) revised by 
+            <p> The Almagest is complicated and based on ancient mathematics and date/time systems. Few
+                people have read it, resulting in many false and over-simple explanations. I hope these
+                animations will help to explain, and demonstrate the elegance of, Ptolemy's models.</p>
+            <p> Various translations of the Almagest have existed over the centuries and the diagrams here are
+                based on <b>Ptolemy's Almagest</b> by G. J. Toomer, Duckworth, 1984 and <b>A Survey of the Almagest by Olaf Pedersen</b> (1974) revised by 
                 Alexander Jones, Springer 2011.</p>
             <p> Ptolemy's stated intention was to extend and complement the works of earlier observers and philosophers. 
-                He used observations from the Babylonian Astronomical Diaries going back over 700 years together with 
+                He used observations from the Babylonian Astronomical Diaries going back over 800 years together with 
                 those of Greek philosophers and his own measurements made in Alexandria.</p>
-            <p> Much of his cosmic "model" 
-                comes from Hipparchus extended as by his own ideas and theories. Hipparchus had 
-                produced models for the Sun and Moon but Ptolemy extended them to all the known planets.</p>
        </div>
-       <h2 class="middle">Coordinates and Scale</h2>
-       <div class="columns">  
-            <p> Ptolemy elected to use the Ecliptic as his reference plane and the Vernal  
-                Equinox as his reference point. So the coordinates of planets are described in terms of longitude
-                (from the equinox) and latitude (north and south of the ecliptic).It was known that 
+       <h2 class="middle">The Models</h2>
+       <div class="columns"> 
+            <p>The models are based on Greek philosophy where it was held that the planets must move in 
+                <b>"uniform circular motions, since these are proper to the nature of divine beings..."</b>. 
+                Clearly there is difficulty in representing planetary orbits in this way. Ptolemy used circles 
+                but compromised over the positioning of the circles and the uniform motion. </p>
+            <p> In each model, the Earth is in the centre of the Universe and consists of the spheres
+                of earth, water, air and fire as described by Aristotle. All planets, including Sun and Moon,
+                orbit round the Earth.
+            <p> Ptolemy used the Ecliptic as his reference plane and the Vernal  
+                Equinox as his reference point. Coordinates of planets are described in terms of longitude
+                round the ecliptic from the equinox and latitude north or south of the ecliptic.It was known that 
                 the equinox moves about about 1 degree per century relative to the stars, but it was 
                 believed this was due to the stars moving, not the equinox. </p>
-            <p> Each planet has its own models and each model has a similar scale. Ptolemy did not
+            <p> Each planet has its own model and each model has a similar scale. Ptolemy did not
                 try to lay out all the models in a complete solar system. In fact he was not sure in what
                 sequence the planets should appear. All the models have a radius of 60 "partes", where a "parte"
-                is an arbitrary unit of measurement.
+                is an arbitrary unit of measurement.</p>
+     
        </div>
        
        <h2 class="middle">Planetary Hypothesis</h2>  
        <div class="columns">
             <p> Ptolemy also published a work called the Planetary Hypothesis which is sometimes
                 regarded as a supplement to the Almagest. In this work, Ptolemy made some small adjustments 
-                to the parameters of the orbits and some major changes to the way Altitude is calculated.</p> 
-            <p>I have adopted these new theories of Altitude in the diagrams shown here as they represent a 
+                to the parameters of the orbits and some major changes to the way latitude is calculated.</p> 
+            <p>I have adopted these new values and theories to the extent they are described in Pederson(1974).
+                In particular the theories of latitude represent a 
                 much more realistic representation of orbital inclination than those in the Almagest.</p>
        </div>
        
@@ -78,10 +83,11 @@
            <p> Mouse drag can be used to shift the diagram so you can examine different areas in detail. </p>
            <p>The animation code is written in Javascript, developed using Netbeans, and deployed
                on the Interplanetary File System (IPFS) using Fleek. </p>
-           <p>The source is available on <a href="https://github.com/Tony-E/mycosmostuff" target="_blank">Github</a> </p>
+           <p>The source is available on <a href="https://github.com/Tony-E/mycosmostuff" target="_blank">Github</a> 
+           as is a PDF document describing the models in more detail.</p>
        </div>
         
-            <p class="footer">Tony Evans 2022-2023</p>     
+            <p class="footer">Tony Evans 2022-2024</p>     
         </div>  
         
         
