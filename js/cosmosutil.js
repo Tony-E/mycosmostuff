@@ -5,8 +5,8 @@
  * This script file contains utility function related to calculation of
  * orbits and drawing images.
  */ 
-/* global pi2, planets, earth */
-var showNames;           // show Names or not
+/* global pi2, planets, earth, JDEpoch, outer */
+var showNames;           // show planet Names in the display or not
 var drawOrbits;          // draw orbits or not
 
 /******************************************************************************
@@ -102,8 +102,8 @@ function Screen() {
     this.height = this.width;    // diagram is square
     this.oldWidth = this.width;  // record screen size at startup
     
-    this.scale=3  ;              // default scale in pixels per Ptolemy's "p" 
-    this.oldScale=this.scale;    // scale when we started 
+    this.scale=3  ;           // default scale in pixels per Ptolemy's "parte" 
+    this.oldScale=this.scale; // scale when we started 
     
     this.centx;           // centre of the animation x and y pixels
     this.centy;
@@ -119,7 +119,7 @@ function Screen() {
     this.cost;
     
     
-    // working areas for transpositions of 3D and 2D points
+    // working areas for transpositions of 3D and 2D points. 
     this.ds = new CosmoPoint(0,0,0);   // 3d space position of orbit or point
     this.d3 = new CosmoPoint(0,0,0);   // rotated 3d space position
     this.d2 = new ScreenPoint(0,0);    // screen projected position
@@ -142,18 +142,23 @@ function Screen() {
   
     // convert a 3D space coord to a 2D screen pixel coord
     this.toScreen = function (space) {
-       // rotate 3D space coord
+       // rotate 3D space coord according to user rotate control
         this.d3.y = space.y * this.cosr - space.x * this.sinr;     
         this.d3.x = space.x * this.cosr + space.y * this.sinr;
         this.d3.z = space.z;  
-       // convert to 2d screen projection with tilt, up, left 
-        this.d2.x =  this.centx - this.left    
-                + (this.scale * this.d3.x);    
-        this.d2.y = this.centy - this.up
+       
+        // convert 3D space to 2d screen point with scale, tilt, up and left. 
+        this.d2.x =  this.centx - this.left + (this.scale * this.d3.x);    
+        this.d2.y = this.centy - this.up 
                 -(this.scale * (this.cost*this.d3.y + this.sint*this.d3.z));  
-    };
+    };  
     
-    // draw a point with name and optional line from Earth.
+    /** draw a point with name and optional line from Earth.
+     * @param {string} name Name of the entity.
+     * @param {object} position 3D space position of entity.
+     * @param {colour} colour to draw entity.
+     * @param {boolean] join Whether to draw a line from Earth to the entity. 
+     */
     this.drawPoint = function(name,position,colour,join) {
         this.ctx.fillStyle = colour;   
         this.ctx.beginPath();             
@@ -175,74 +180,87 @@ function Screen() {
         }
     };
     
-    // draw a planet with its name (also used to draw any point or node that
-    // needs to have body or name
+    /**
+     * Draw a planet with its name (also used to draw any point or node that
+     * needs to have body or name). Position, colour etc are obtained from
+     * the Symbol object.
+     * 
+     * @param {object} bod The Symbol object to be drawn.
+     * */
     this.drawPlanet = function (bod) {
-        this.ctx.fillStyle = bod.colour;   // using the body's colour
-        this.ctx.beginPath();              // start drawing
-        this.toScreen(bod.P);       // position of body to screen coords
-        let pSize = bod.size * this.scale/this.oldScale;  // scale body size
-        this.ctx.arc(this.d2.x, this.d2.y, pSize, 0, pi2);// draw
+       /* convert bod.P to screen position and scale body size */
+        this.toScreen(bod.P); 
+        let pSize = Math.max(bod.size * this.scale/this.oldScale,1); 
+        
+       /* draw body using bod.colour */ 
+        this.ctx.fillStyle = bod.colour;   
+        this.ctx.beginPath();              
+        this.ctx.arc(this.d2.x, this.d2.y, pSize, 0, pi2);         
         this.ctx.fill();
-        if (showNames) {           // draw body name if required
-            this.ctx.strokeStyle  = bod.colour;
-            this.ctx.fillText(bod.name ,this.d2.x+2 + pSize, this.d2.y+2);
-            this.toScreen(bod.D);
-            this.ctx.fillText(bod.cName ,this.d2.x+2, this.d2.y+2);
-            this.ctx.globalCompositeOperation = "source-over";
-            
+        
+       /* draw body name if required */ 
+        if (showNames) {    
+          this.ctx.strokeStyle  = bod.colour;
+          this.ctx.fillText(bod.name ,this.d2.x+2 + pSize, this.d2.y+2);
+          this.ctx.globalCompositeOperation = "source-over";
         }
     };
     
-    //   draw circle deferent or epicycle */
-    this.drawOrbit = function (bod) {
-       if (!drawOrbits) return;  // quit of no orbit should be drawn
+    /**   
+     * Draw a deferent, equant or epicycle circle and the name of its 
+     * central point.
+     * @param {object} bod The Entity object owning the circle.
+     * @param node Longitude of ascending node.
+     **/
+    this.drawOrbit = function (bod, node) {
+       if (!drawOrbits) return;           // quit of no orbit required
+       bod.sini = Math.sin(bod.inc);
        this.ctx.strokeStyle = bod.colour; // using body colour
-       this.ctx.beginPath();     // start drawing
+       this.ctx.beginPath();              // start drawing
        
         /* the circle is constructed with a set of short lines so that the entire
          * figure can be transposed to the screen viewing angle with rotate, 
-         * tilt, up,left. */
+         * tilt, up, left and scale. */
       
        let dt = 0.1;   // this should be small enough that the circles look OK
        for (let t=0; t<(pi2+dt); t=t+dt) {
           // space Z is based on distance and ascending node
-           this.ds.z = bod.R * bod.sini * Math.sin(t - bod.node);
+           this.ds.z = bod.R * bod.sini * Math.sin(t - node);
           // space X, Y are based on sin and cos of angle round the circle
            let xy = Math.sqrt(bod.R * bod.R - this.ds.z * this.ds.z);
            this.ds.x = xy * Math.cos(t);
            this.ds.y = xy * Math.sin(t);
-          // if ecentre method, the circle is centred on an ecentric
-           if (bod.method === 1) {this.ds.plus(bod.D);}
+          // the circle is centred on point D
+           this.ds.plus(bod.D);  
           // convert to screen coordinate and draw the arc (except first point)
            this.toScreen(this.ds);
            if (t===0) {this.ctx.moveTo(this.d2.x, this.d2.y);
            } else {this.ctx.lineTo(this.d2.x,this.d2.y);}
        }
        this.ctx.stroke(); // draw the circle
+       if (showNames) {   
+          this.toScreen(bod.D);
+          this.ctx.fillStyle  = bod.colour;
+          this.ctx.fillText(bod.name ,this.d2.x+2 + 2, this.d2.y+2);
+          this.ctx.globalCompositeOperation = "source-over";
+        }
     };    
     
-    // draw a line from the centre of a to the planet of b */
+    /** draw a line from the centre of a to the planet of b 
+     * @param {Entity} a The centre of the deferent of a is one end of the line.
+     * @param {Entity} b The location of the planet of b is other end of line. 
+     * @param {strokestyle} c The style of stroke to draw.
+     * */
     this.join = function (a, b, c) {
        this.ctx.strokeStyle = c;
        this.ctx.beginPath();
-       this.toScreen(a.D);
+       this.toScreen(a);
        this.ctx.moveTo(this.d2.x,this.d2.y);
-       this.toScreen(b.P);
+       this.toScreen(b);
        this.ctx.lineTo(this.d2.x, this.d2.y);
        this.ctx.stroke();
     };
         
-    // draw celestial sphere (not currently used
-    this.doStars = function(r) {
-        this.ctx.beginPath(); 
-        let pat = this.ctx.createPattern(this.starImage, "repeat");
-        this.ctx.strokeStyle = pat;
-        this.ctx.lineWidth = "9";
-        this.ctx.arc(this.centx, this.centy, r*this.scale/2, 0, 2 * Math.PI);
-        this.ctx.stroke(); 
-        this.ctx.lineWidth = "1";
-    };
     
     // canvas has been resized 
     this.reSize = function() {
@@ -269,93 +287,67 @@ function Screen() {
      };
     
     // Draw the Julian Day number, longitude and latitude 
-    this.drawInfo = function (elapse, long, lat) {
+    this.drawInfo = function (elapse, long, lat, q, n) {
        this.ctx.fillStyle  = "#ffffaa";
        let text = "JD: ";
-       let jd = 1448273.0 + elapse;
+       let jd = JDEpoch + elapse;
        text += jd.toFixed(2);
-       text += "   Long: " + toDegrees(long).toFixed(1) + "° ";
-       text += "    Lat: " + toDegrees(lat).toFixed(1) + "° ";
+       text += " Long: " + toDegrees(long).toFixed(2) + "° ";
+       text += " Lat: " + toDegrees(lat).toFixed(2) + "° ";
+       text += " MeanSun: " + toDegrees(q).toFixed(2) + "° ";
+       text += "\n Node: " + toDegrees(n).toFixed(2) + "° ";
        this.ctx.fillText(text,20, this.height-20);
     };
 }
-/* Entity is a data object containing details of a planet. The variables are
- * named as far as possible according to Pederson. Most Entities will have only
- * a subset of all the available preperties.
- *  
- * @returns {Entity} an empty Entity object.
+
+
+
+/*******************************************************************************
+ * A Symbol is any object to be drawn on the screen. It can be a planet, 
+ * the vernal equinox or other symbol in the outer ring or any of the various
+ * circular constructs in the orbit diagram.
+ * * 
+ * @param n Name or text of the symbol.
+ * @param c Colour of the symbol.
+ * @param s Size of displayed planet or object in pixels.
+ * @returns (Symbol)
  */
-function Entity(n1, n2) {
-    this.name = n1;                            // Name to show in orbit
-    this.cName= n2;                            // Name of central point
-    this.P = new CosmoPoint(0,0,0);            // 3D coordinate of centre
-    this.D = new CosmoPoint(0,0,0);            // 3D coordinate of eccentre
-    this.C = new CosmoPoint(0,0,0);            // Position of epicycle centre
-    this.size = 0;                             // Size of drawn blob
+function Symbol(n,c,s) {
+    /* general attributes */
+     this.name = n;                       // name or text of symbol/planet
+     this.colour = c;                     // colour
+     this.size = s;                       // size of planet/point symbol
     
-    this.R = 0.0;               // Radius of equant and deferent
-    this.r = 0.0;               // Radius of epicycle
-    this.maxDA = 0.0;           // Max angle subtended by DT at C
+    /* attributes of a circular construct */ 
+     this.P = new CosmoPoint(0,0,0); // 3D position of point on circumference 
+     this.D = new CosmoPoint(0,0,0); // 3D coordinates of centre
+     this.R = outer;                 // radius of circlular construct
+     
+    /* relates to motion of a point around the circle */ 
+     this.anomaly = 0;                   // current longitude
+     this.longAtEpoch =0;;               // longitude at epoch
+     this.meanMotion = 0;;               // daily motion of longitude
+     
+    /* relates the inclination of the plane of the symbol */
+     this.inc = 0;                   // inclination to  plane of ecliptic
     
-    // describe the position of D
-    this.lamdaA = 0.0;           // longitude of A - direction of D from Earth
-    this.lamdaAatEpoch = 0.0;    // longitude of A at epoch
-    this.lamdaAmotion = 0.0;     // motion of lamdaA(radians per day)
-    this.e = 0.0;                // distance of D from Earth
-        
-    // describe motion
-    this.longAtEpoch = 0.0;      // Longitude at epoch (radians)
-    this.meanMotion = 0.0;       // rate of increase of mean longitude (radians/day)
-    this.anomaly = 0.0;          // current longitude
-    
-    // latitude
-    this.node = 0.0;             // longitude of ascending node (radians)
-    this.nodeAtEpoch = 0.0;      // long. asc. node at epoch (radians)
-    this.nodeMotion;             // daily rate of change of long asc. node
-    this.incl = 0.0;             // inclination in radians
-    
-    // epicycle for this planet
-    this.epi;
-    
-    // computing method
-    this.method = 1;             // orbit calculation method for this object
-                                 // 1. Orbit Centred on eccentre
-    this.animationRate = 20;     // suitable animation rate for this object
-    
-    /* trig functions pre-calculated */
-    this.cosi =1;
-    this.sini =0;
-    
-   /******************** copy entity values **********************
-    * 
-    * @param {type} e the entity from which property values are to be copied.
-    */
-    this.copy = function(e) {
-        this.name = e.name;
-        this.cName= e.cName;
-        this.P.copy(e.P);
-        this.D.copy(e.D);
-        this.C.copy(e.C);           
-        this.size = e.size;
-        this.R = e.R;
-        this.r = e.r;        
-        this.maxDA = e.maxDA;
-        this.lamdaA = e.lamdaA;
-        this.lamdaAatEpoch = e.lamdaAatEpoch;
-        this.lamdaAmotion = e.lamdaAmotion;
-        this.e = e.e;                
-        this.longAtEpoch = e.longAtEpoch;
-        this.meanMotion = e.meanMotion;
-        this.node = e.node;
-        this.nodeAtEpoch = e.nodeAtEpoch;
-        this.nodeMotion = e.nodeMotion;
-        this.incl = e.incl;           
-        this.cosi = e.cosi;
-        this.sini = e.sini;
-    };
-}   
+ 
+    /* function to copy the plane of symbol s */
+     this.copyPlane = function(s) {
+         this.anomaly = s.anomaly;
+         this.longAtEpoch = s.longAtEpoch;
+         this.meanMotion = s.meanMotion;
+         this.inc = s.inc;
+     } ;
+}
+
+
 
 // funtions to convert to/from degrees/radians
 function toRadians (deg) { return deg*Math.PI/180;}
 function toDegrees (rad) { return rad*180/Math.PI;}
+// override the % funtion to handle negative numbers correctly
+Number.prototype.mod = function (n) {
+    return ((this % n) + n) % n;
+};
   
